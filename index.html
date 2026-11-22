@@ -17,7 +17,7 @@
 const imageWidth=487,imageHeight=630;
 const bounds=[[0,0],[imageHeight,imageWidth]];
 const map=L.map('map',{crs:L.CRS.Simple,minZoom:-2,maxZoom:3,zoomSnap:.25});
-L.imageOverlay('GTA6 Map.png',bounds).addTo(map);
+L.imageOverlay('Leonida_Map.jpg',bounds).addTo(map);
 map.fitBounds(bounds);
 map.setMaxBounds([[-100,-100],[imageHeight+100,imageWidth+100]]);
 const categories=['Police','EMS','Business','Housing','Entertainment','Criminal','Government','Other'];
