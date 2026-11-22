@@ -3,8 +3,9 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzx2K5uLr2jLJcxt9tV0o0=" crossorigin="">
 <style>
 :root{font-family:Inter,system-ui,Arial,sans-serif;color-scheme:dark}*{box-sizing:border-box}html,body{height:100%;margin:0}body{background:#101827;color:#f3f7fb}.app{height:100dvh;display:flex;overflow:hidden}.sidebar{width:320px;flex:none;background:#111e2e;border-right:1px solid #344358;display:flex;flex-direction:column;min-height:0}.sidebar-top{padding:20px 18px 8px}.brand{font-size:20px;font-weight:800}.muted{font-size:12px;color:#aab9cb;line-height:1.5}.sidebar-scroll{padding:0 18px 20px;overflow-y:auto;min-height:0}.sidebar h2{font-size:13px;margin:20px 0 10px}.field{display:block;width:100%;padding:10px 12px;background:#1e3045;color:white;border:1px solid #475d74;border-radius:8px;font:inherit;font-size:14px;margin:10px 0}.field:focus{outline:2px solid #36c0ad;outline-offset:1px}.btn{border:0;border-radius:8px;padding:10px 13px;background:#31bca9;color:#071e22;font:inherit;font-size:13px;font-weight:700;cursor:pointer}.btn.secondary{background:#2b4057;color:#fff}.btn.danger{background:#9a3e4b;color:#fff}.btn:focus-visible{outline:2px solid #fff;outline-offset:2px}.marker-item{background:#1e3045;border:1px solid #344c63;border-radius:8px;padding:11px;margin:8px 0;cursor:pointer}.marker-item strong{display:block;font-size:13px}.marker-item small{color:#b1c3d3}.workspace{flex:1;display:flex;min-width:0;position:relative}.map-wrap{flex:1;position:relative;min-width:0}#map{height:100%;width:100%;background:#193b51}.hint{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:500;background:#122338e8;padding:10px 14px;border-radius:9px;font-size:12px;pointer-events:none;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}.editor{width:340px;flex:none;background:#19283b;border-left:1px solid #40536b;display:none;flex-direction:column;min-height:0;z-index:600}.editor.open{display:flex}.editor-head{padding:17px 18px;border-bottom:1px solid #36485d;display:flex;align-items:center;justify-content:space-between}.editor-head strong{font-size:17px}.close{background:transparent;border:0;color:#fff;font-size:24px;cursor:pointer}.editor-body{overflow-y:auto;padding:18px;min-height:0}.editor label{display:block;color:#b6c9da;font-size:12px;margin:0 0 14px}.editor label .field{margin:6px 0 0}.editor textarea{min-height:115px;resize:vertical}.editor-actions{display:flex;flex-wrap:wrap;gap:8px}.leaflet-container{background:#193b51}.pin{height:25px;width:25px;border:3px solid white;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 2px 8px #0008}.pin-inner{height:9px;width:9px;border-radius:50%;background:white;position:absolute;left:5px;top:5px}.leaflet-control-attribution{font-size:10px!important}.status{font-size:12px;color:#b3c5d6;padding:12px 18px 0}@media(max-width:900px){.sidebar{width:255px}.editor{width:290px}}@media(max-width:700px){.sidebar{width:190px}.sidebar-top,.sidebar-scroll{padding-left:10px;padding-right:10px}.brand{font-size:15px}.editor{position:absolute;right:0;top:0;bottom:0;width:min(340px,72vw);box-shadow:-8px 0 20px #0007}.hint{top:8px;font-size:10px}}@media(max-width:460px){.sidebar{width:125px}.brand{font-size:13px}.sidebar .muted{font-size:10px}.sidebar h2{font-size:11px}.field{font-size:12px;padding:8px}.btn{font-size:11px;padding:8px}.editor{width:min(320px,85vw)}}
+.account-section{border:1px solid #344c63;background:#17273a;border-radius:10px;padding:12px;margin:14px 0}.account-section h2{margin:0 0 8px}.account-section .field{margin:8px 0}.account-section .editor-actions{gap:6px}.account-section .btn{flex:1}.account-section #accountMessage{overflow-wrap:anywhere}
 </style></head><body>
-<div class="app"><aside class="sidebar"><div class="sidebar-top"><div class="brand">🗺️ Leonida RP Planner</div><p class="muted">Building directory • Local prototype</p><p class="muted" id="cloudStatus" role="status">Supabase: checking connection…</p></div><div class="sidebar-scroll"><input class="field" id="search" placeholder="Search buildings…" aria-label="Search buildings"><select class="field" id="filter" aria-label="Filter by category"><option value="">All categories</option><option>Police</option><option>EMS</option><option>Business</option><option>Housing</option><option>Entertainment</option><option>Criminal</option><option>Government</option><option>Other</option></select><h2>Buildings (<span id="count">0</span>)</h2><div id="list"></div><h2>Back up markers</h2><button class="btn secondary" id="export">Export JSON</button> <label class="btn secondary" for="import" style="display:inline-block;cursor:pointer">Import JSON</label><input type="file" id="import" accept="application/json,.json" hidden><p class="muted">Markers are stored in this browser, not shared with staff yet. Export backups regularly.</p></div></aside>
+<div class="app"><aside class="sidebar"><div class="sidebar-top"><div class="brand">🗺️ Leonida RP Planner</div><p class="muted">Building directory • Local prototype</p><p class="muted" id="cloudStatus" role="status">Supabase: checking connection…</p></div><div class="sidebar-scroll"><input class="field" id="search" placeholder="Search buildings…" aria-label="Search buildings"><select class="field" id="filter" aria-label="Filter by category"><option value="">All categories</option><option>Police</option><option>EMS</option><option>Business</option><option>Housing</option><option>Entertainment</option><option>Criminal</option><option>Government</option><option>Other</option></select><section class="account-section" aria-label="Community account"><h2>Community account</h2><p class="muted" id="accountStatus" role="status">Checking sign-in…</p><form id="accountForm" hidden><input class="field" id="accountEmail" type="email" autocomplete="email" placeholder="Email address" required><input class="field" id="accountPassword" type="password" autocomplete="current-password" minlength="6" placeholder="Password" required><div class="editor-actions"><button class="btn" type="submit" id="signInButton">Log in</button><button class="btn secondary" type="button" id="signUpButton">Create account</button></div></form><button class="btn secondary" id="signOutButton" type="button" hidden>Log out</button><p class="muted" id="accountMessage" aria-live="polite"></p></section><h2>Buildings (<span id="count">0</span>)</h2><div id="list"></div><h2>Back up markers</h2><button class="btn secondary" id="export">Export JSON</button> <label class="btn secondary" for="import" style="display:inline-block;cursor:pointer">Import JSON</label><input type="file" id="import" accept="application/json,.json" hidden><p class="muted">Markers are stored in this browser, not shared with staff yet. Export backups regularly.</p></div></aside>
 <div class="workspace"><main class="map-wrap"><div id="map"></div><div class="hint" id="hint">Click the map to add a building</div></main><aside class="editor" id="editor" aria-label="Building editor"><div class="editor-head"><strong id="editorTitle">Add building</strong><button class="close" id="closeEditor" aria-label="Close editor">×</button></div><div class="editor-body"><form id="buildingForm"><label>Building name<input class="field" id="buildingName" maxlength="100" required placeholder="e.g. Downtown restaurant"></label><label>RP category<select class="field" id="buildingCategory"><option>Police</option><option>EMS</option><option>Business</option><option>Housing</option><option>Entertainment</option><option>Criminal</option><option>Government</option><option>Other</option></select></label><label>Interior status<select class="field" id="buildingStatus"><option>Unverified</option><option>Confirmed enterable</option><option>Partially enterable</option><option>Not enterable</option></select></label><label>RP development notes<textarea class="field" id="buildingNotes" maxlength="2000" placeholder="Potential use, interior details, scripts needed…"></textarea></label><div class="editor-actions"><button class="btn" type="submit">Save building</button><button class="btn danger" type="button" id="deleteBuilding" hidden>Delete</button><button class="btn secondary" type="button" id="cancelEditor">Cancel</button></div></form></div></aside></div></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -29,6 +30,67 @@
     status.textContent = 'Supabase: connection failed';
     console.error('Leonida Supabase connection:', error);
   }
+})();
+</script>
+<script>
+// Community authentication only. Publishing remains disabled in this step.
+(() => {
+  const $ = id => document.getElementById(id);
+  const form = $('accountForm');
+  const message = $('accountMessage');
+  const status = $('accountStatus');
+  const signOut = $('signOutButton');
+  const client = window.leonidaSupabase;
+  if (!client) {
+    status.textContent = 'Login unavailable: Supabase library did not load.';
+    return;
+  }
+  function setMessage(text) { message.textContent = text; }
+  function render(session) {
+    const user = session?.user;
+    status.textContent = user ? 'Signed in as ' + (user.email || 'community member') : 'Not signed in';
+    form.hidden = Boolean(user);
+    signOut.hidden = !user;
+    if (user) $('accountPassword').value = '';
+  }
+  async function perform(action) {
+    const email = $('accountEmail').value.trim();
+    const password = $('accountPassword').value;
+    if (!email || !password) { setMessage('Enter your email and password.'); return; }
+    const buttons = [$('signInButton'), $('signUpButton')];
+    buttons.forEach(button => button.disabled = true);
+    setMessage('Please wait…');
+    try {
+      const result = action === 'signup'
+        ? await client.auth.signUp({email, password, options: {emailRedirectTo: 'https://kash517.github.io/GTA6-Interior-Map/'}})
+        : await client.auth.signInWithPassword({email, password});
+      if (result.error) throw result.error;
+      if (action === 'signup') {
+        setMessage(result.data.session ? 'Account created and signed in.' : 'Check your email for a confirmation link. Then return here to log in.');
+      } else {
+        setMessage('Logged in successfully.');
+      }
+      render(result.data.session);
+    } catch (error) {
+      setMessage(error.message || 'Authentication failed.');
+    } finally {
+      buttons.forEach(button => button.disabled = false);
+    }
+  }
+  form.addEventListener('submit', event => {event.preventDefault();perform('login');});
+  $('signUpButton').addEventListener('click', () => perform('signup'));
+  signOut.addEventListener('click', async () => {
+    signOut.disabled = true;
+    const {error} = await client.auth.signOut();
+    signOut.disabled = false;
+    setMessage(error ? error.message : 'Logged out.');
+    if (!error) render(null);
+  });
+  client.auth.onAuthStateChange((_event, session) => { render(session); });
+  client.auth.getSession().then(({data, error}) => {
+    if (error) {status.textContent = 'Could not check login';setMessage(error.message);return;}
+    render(data.session);
+  }).catch(error => {status.textContent = 'Could not check login';setMessage(error.message);});
 })();
 </script>
 <script>
