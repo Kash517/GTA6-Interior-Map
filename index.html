@@ -105,7 +105,7 @@ const safeError=e=>e?.message||'An unexpected error occurred';
 const setMessage=s=>{$('mapMessage').textContent=s};
 const normalize=(x,y)=>({x:Math.max(0,Math.min(1,x/W)),y:Math.max(0,Math.min(1,y/H))});
 const fromRow=r=>({id:r.id,x:r.x*W,y:r.y*H,name:r.name,category:r.category,status:r.interior_status,notes:r.notes||''});
-function icon(cat){return L.divIcon({className:'',html:'<div class="pin" style="background:'+(colors[cat]||colors.Other)+'"><div class="pin-inner"></div></div>',iconSize:[27,27],iconAnchor:[13,26]})}
+function markerStyle(cat){return {radius:9,color:'#ffffff',weight:3,opacity:1,fillColor:colors[cat]||colors.Other,fillOpacity:1,interactive:true}}
 function closeEditor(){editing=null;$('editor').classList.remove('open');if(temporary){map.removeLayer(temporary);temporary=null}setTimeout(()=>map.invalidateSize(),30)}
 function openEditor(entry,isNew){
   if(!user){$('accountMessage').textContent='Please log in to submit a building proposal.';return}
@@ -113,12 +113,12 @@ function openEditor(entry,isNew){
   $('buildingName').value=entry.name;$('buildingCategory').value=categories.includes(entry.category)?entry.category:'Other';
   $('buildingStatus').value=entry.status||'Unverified';$('buildingNotes').value=entry.notes||'';
   $('editor').classList.add('open');if(temporary){map.removeLayer(temporary);temporary=null}
-  if(isNew)temporary=L.marker([entry.y,entry.x],{icon:icon(entry.category)}).addTo(map);
+  if(isNew)temporary=L.circleMarker([entry.y,entry.x],markerStyle(entry.category)).addTo(map);
   setTimeout(()=>map.invalidateSize(),30);
 }
 function matches(e){const q=$('search').value.trim().toLowerCase();return (!$('filter').value||e.category===$('filter').value)&&(!q||(e.name+' '+e.notes+' '+e.category).toLowerCase().includes(q))}
 function render(){layer.clearLayers();$('list').replaceChildren();const shown=entries.filter(matches);$('count').textContent=shown.length;
-  shown.forEach(e=>{const marker=L.marker([e.y,e.x],{icon:icon(e.category)}).addTo(layer);marker.on('click',()=>openEditor(e,false));
+  shown.forEach(e=>{const marker=L.circleMarker([e.y,e.x],markerStyle(e.category)).addTo(layer);marker.on('click',()=>openEditor(e,false));
     const item=document.createElement('div');item.className='marker-item';const name=document.createElement('strong');name.textContent=e.name;
     const meta=document.createElement('small');meta.textContent=e.category+' • '+(e.status||'Unverified');item.append(name,meta);
     item.addEventListener('click',()=>{map.setView([e.y,e.x],Math.max(map.getZoom(),0));openEditor(e,false)});$('list').append(item)});
@@ -197,7 +197,7 @@ function start(){const bounds=[[0,0],[H,W]];
   map.setMaxBounds([[-H*.2,-W*.2],[H*1.2,W*1.2]]);layer=L.layerGroup().addTo(map);
   render();map.on('click',ev=>{const {lat:y,lng:x}=ev.latlng;if(x<0||x>W||y<0||y>H)return;
     openEditor({id:crypto.randomUUID(),x,y,name:'',category:'Business',status:'Unverified',notes:''},true)});
-  $('buildingCategory').addEventListener('change',()=>{if(temporary)temporary.setIcon(icon($('buildingCategory').value))});
+  $('buildingCategory').addEventListener('change',()=>{if(temporary)temporary.setStyle(markerStyle($('buildingCategory').value))});
   $('buildingForm').addEventListener('submit',submitBuilding);
   $('closeEditor').addEventListener('click',closeEditor);$('cancelEditor').addEventListener('click',closeEditor);
   $('search').addEventListener('input',render);$('filter').addEventListener('change',render);
