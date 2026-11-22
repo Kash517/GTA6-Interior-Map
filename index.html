@@ -3,10 +3,10 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzx2K5uLr2jLJcxt9tV0o0=" crossorigin="">
 <style>
 :root{font-family:Inter,system-ui,Arial,sans-serif;color-scheme:dark}*{box-sizing:border-box}html,body{height:100%;margin:0}body{background:#101827;color:#f3f7fb}.app{height:100dvh;display:flex;overflow:hidden}.sidebar{width:320px;flex:none;background:#111e2e;border-right:1px solid #344358;display:flex;flex-direction:column;min-height:0}.sidebar-top{padding:20px 18px 8px}.brand{font-size:20px;font-weight:800}.muted{font-size:12px;color:#aab9cb;line-height:1.5}.sidebar-scroll{padding:0 18px 20px;overflow-y:auto;min-height:0}.sidebar h2{font-size:13px;margin:20px 0 10px}.field{display:block;width:100%;padding:10px 12px;background:#1e3045;color:white;border:1px solid #475d74;border-radius:8px;font:inherit;font-size:14px;margin:10px 0}.field:focus{outline:2px solid #36c0ad;outline-offset:1px}.btn{border:0;border-radius:8px;padding:10px 13px;background:#31bca9;color:#071e22;font:inherit;font-size:13px;font-weight:700;cursor:pointer}.btn.secondary{background:#2b4057;color:#fff}.btn.danger{background:#9a3e4b;color:#fff}.btn:focus-visible{outline:2px solid #fff;outline-offset:2px}.marker-item{background:#1e3045;border:1px solid #344c63;border-radius:8px;padding:11px;margin:8px 0;cursor:pointer}.marker-item strong{display:block;font-size:13px}.marker-item small{color:#b1c3d3}.workspace{flex:1;display:flex;min-width:0;position:relative}.map-wrap{flex:1;position:relative;min-width:0}#map{height:100%;width:100%;background:#193b51}.hint{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:500;background:#122338e8;padding:10px 14px;border-radius:9px;font-size:12px;pointer-events:none;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}.editor{width:340px;flex:none;background:#19283b;border-left:1px solid #40536b;display:none;flex-direction:column;min-height:0;z-index:600}.editor.open{display:flex}.editor-head{padding:17px 18px;border-bottom:1px solid #36485d;display:flex;align-items:center;justify-content:space-between}.editor-head strong{font-size:17px}.close{background:transparent;border:0;color:#fff;font-size:24px;cursor:pointer}.editor-body{overflow-y:auto;padding:18px;min-height:0}.editor label{display:block;color:#b6c9da;font-size:12px;margin:0 0 14px}.editor label .field{margin:6px 0 0}.editor textarea{min-height:115px;resize:vertical}.editor-actions{display:flex;flex-wrap:wrap;gap:8px}.leaflet-container{background:#193b51}.pin{height:25px;width:25px;border:3px solid white;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 2px 8px #0008}.pin-inner{height:9px;width:9px;border-radius:50%;background:white;position:absolute;left:5px;top:5px}.leaflet-control-attribution{font-size:10px!important}.status{font-size:12px;color:#b3c5d6;padding:12px 18px 0}@media(max-width:900px){.sidebar{width:255px}.editor{width:290px}}@media(max-width:700px){.sidebar{width:190px}.sidebar-top,.sidebar-scroll{padding-left:10px;padding-right:10px}.brand{font-size:15px}.editor{position:absolute;right:0;top:0;bottom:0;width:min(340px,72vw);box-shadow:-8px 0 20px #0007}.hint{top:8px;font-size:10px}}@media(max-width:460px){.sidebar{width:125px}.brand{font-size:13px}.sidebar .muted{font-size:10px}.sidebar h2{font-size:11px}.field{font-size:12px;padding:8px}.btn{font-size:11px;padding:8px}.editor{width:min(320px,85vw)}}
-.account-section{border:1px solid #344c63;background:#17273a;border-radius:10px;padding:12px;margin:14px 0}.account-section h2{margin:0 0 8px}.account-section .field{margin:8px 0}.account-section .editor-actions{gap:6px}.account-section .btn{flex:1}.account-section #accountMessage{overflow-wrap:anywhere}
+.account-section{border:1px solid #344c63;background:#17273a;border-radius:10px;padding:12px;margin:14px 0}.account-section h2{margin:0 0 8px}.account-section .field{margin:8px 0}.account-section .editor-actions{gap:6px}.account-section .btn{flex:1}.account-section #accountMessage{overflow-wrap:anywhere}.review-card{background:#1e3045;border:1px solid #344c63;border-radius:8px;padding:10px;margin:8px 0;overflow-wrap:anywhere}.review-card strong{display:block}.review-card small{color:#b1c3d3}.review-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}.review-actions .btn{flex:1}.notice{color:#9ee3d7}
 </style></head><body>
-<div class="app"><aside class="sidebar"><div class="sidebar-top"><div class="brand">🗺️ Leonida RP Planner</div><p class="muted">Building directory • Local prototype</p><p class="muted" id="cloudStatus" role="status">Supabase: checking connection…</p></div><div class="sidebar-scroll"><input class="field" id="search" placeholder="Search buildings…" aria-label="Search buildings"><select class="field" id="filter" aria-label="Filter by category"><option value="">All categories</option><option>Police</option><option>EMS</option><option>Business</option><option>Housing</option><option>Entertainment</option><option>Criminal</option><option>Government</option><option>Other</option></select><section class="account-section" aria-label="Community account"><h2>Community account</h2><p class="muted" id="accountStatus" role="status">Checking sign-in…</p><form id="accountForm" hidden><input class="field" id="accountEmail" type="email" autocomplete="email" placeholder="Email address" required><input class="field" id="accountPassword" type="password" autocomplete="current-password" minlength="6" placeholder="Password" required><div class="editor-actions"><button class="btn" type="submit" id="signInButton">Log in</button><button class="btn secondary" type="button" id="signUpButton">Create account</button></div></form><button class="btn secondary" id="signOutButton" type="button" hidden>Log out</button><p class="muted" id="accountMessage" aria-live="polite"></p></section><h2>Buildings (<span id="count">0</span>)</h2><div id="list"></div><h2>Back up markers</h2><button class="btn secondary" id="export">Export JSON</button> <label class="btn secondary" for="import" style="display:inline-block;cursor:pointer">Import JSON</label><input type="file" id="import" accept="application/json,.json" hidden><p class="muted">Markers are stored in this browser, not shared with staff yet. Export backups regularly.</p></div></aside>
-<div class="workspace"><main class="map-wrap"><div id="map"></div><div class="hint" id="hint">Click the map to add a building</div></main><aside class="editor" id="editor" aria-label="Building editor"><div class="editor-head"><strong id="editorTitle">Add building</strong><button class="close" id="closeEditor" aria-label="Close editor">×</button></div><div class="editor-body"><form id="buildingForm"><label>Building name<input class="field" id="buildingName" maxlength="100" required placeholder="e.g. Downtown restaurant"></label><label>RP category<select class="field" id="buildingCategory"><option>Police</option><option>EMS</option><option>Business</option><option>Housing</option><option>Entertainment</option><option>Criminal</option><option>Government</option><option>Other</option></select></label><label>Interior status<select class="field" id="buildingStatus"><option>Unverified</option><option>Confirmed enterable</option><option>Partially enterable</option><option>Not enterable</option></select></label><label>RP development notes<textarea class="field" id="buildingNotes" maxlength="2000" placeholder="Potential use, interior details, scripts needed…"></textarea></label><div class="editor-actions"><button class="btn" type="submit">Save building</button><button class="btn danger" type="button" id="deleteBuilding" hidden>Delete</button><button class="btn secondary" type="button" id="cancelEditor">Cancel</button></div></form></div></aside></div></div>
+<div class="app"><aside class="sidebar"><div class="sidebar-top"><div class="brand">🗺️ Leonida RP Planner</div><p class="muted">Building directory • Community submissions</p><p class="muted" id="cloudStatus" role="status">Supabase: checking connection…</p></div><div class="sidebar-scroll"><input class="field" id="search" placeholder="Search buildings…" aria-label="Search buildings"><select class="field" id="filter" aria-label="Filter by category"><option value="">All categories</option><option>Police</option><option>EMS</option><option>Business</option><option>Housing</option><option>Entertainment</option><option>Criminal</option><option>Government</option><option>Other</option></select><section class="account-section" aria-label="Community account"><h2>Community account</h2><p class="muted" id="accountStatus" role="status">Checking sign-in…</p><form id="accountForm" hidden><input class="field" id="accountEmail" type="email" autocomplete="email" placeholder="Email address" required><input class="field" id="accountPassword" type="password" autocomplete="current-password" minlength="6" placeholder="Password" required><div class="editor-actions"><button class="btn" type="submit" id="signInButton">Log in</button><button class="btn secondary" type="button" id="signUpButton">Create account</button></div></form><button class="btn secondary" id="signOutButton" type="button" hidden>Log out</button><p class="muted" id="accountMessage" aria-live="polite"></p></section><h2>Buildings (<span id="count">0</span>)</h2><p class="muted" id="mapMessage" role="status">Loading approved buildings…</p><div id="list"></div><section class="account-section" id="mySubmissions" hidden><h2>My submissions</h2><div id="mySubmissionList" class="muted"></div></section><section class="account-section" id="moderationSection" hidden><h2>Moderation queue (<span id="pendingCount">0</span>)</h2><p class="muted">Approve or reject proposed buildings and edits.</p><div id="moderationList"></div></section><h2>Export approved buildings</h2><button class="btn secondary" id="export">Export JSON</button><p class="muted">Only approved buildings appear on the public map. Click a location to propose a new building.</p></div></aside>
+<div class="workspace"><main class="map-wrap"><div id="map"></div><div class="hint" id="hint">Click the map to propose a building</div></main><aside class="editor" id="editor" aria-label="Building editor"><div class="editor-head"><strong id="editorTitle">Add building</strong><button class="close" id="closeEditor" aria-label="Close editor">×</button></div><div class="editor-body"><form id="buildingForm"><label>Building name<input class="field" id="buildingName" maxlength="100" required placeholder="e.g. Downtown restaurant"></label><label>RP category<select class="field" id="buildingCategory"><option>Police</option><option>EMS</option><option>Business</option><option>Housing</option><option>Entertainment</option><option>Criminal</option><option>Government</option><option>Other</option></select></label><label>Interior status<select class="field" id="buildingStatus"><option>Unverified</option><option>Confirmed enterable</option><option>Partially enterable</option><option>Not enterable</option></select></label><label>RP development notes<textarea class="field" id="buildingNotes" maxlength="2000" placeholder="Potential use, interior details, scripts needed…"></textarea></label><div class="editor-actions"><button class="btn" type="submit" id="submitBuilding">Submit for approval</button><button class="btn secondary" type="button" id="cancelEditor">Cancel</button></div></form></div></aside></div></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
@@ -94,20 +94,119 @@
 })();
 </script>
 <script>
-(()=>{'use strict';
-const IMAGE='Leonida_Map.jpg',OLD_KEY='leonida-rp-markers-v1',KEY='leonida-rp-markers-v2';
+(() => {'use strict';
+const IMAGE='Leonida_Map.jpg';
 const categories=['Police','EMS','Business','Housing','Entertainment','Criminal','Government','Other'];
 const colors={Police:'#3688e9',EMS:'#e05252',Business:'#27b89d',Housing:'#d2a24b',Entertainment:'#b474e6',Criminal:'#db6a42',Government:'#647ccf',Other:'#8896a7'};
-const $=id=>document.getElementById(id);let entries=[],map,layer,bounds,W,H,editing=null,temporary=null;
-const valid=e=>e&&typeof e.id==='string'&&Number.isFinite(e.x)&&Number.isFinite(e.y)&&typeof e.name==='string'&&typeof e.category==='string'&&typeof e.notes==='string';
-function save(){try{localStorage.setItem(KEY,JSON.stringify(entries))}catch(e){alert('Could not save markers in this browser. Export a backup.')}}
-function initData(){try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(Array.isArray(saved)){entries=saved.filter(valid);return}const old=JSON.parse(localStorage.getItem(OLD_KEY)||'[]');if(Array.isArray(old)){entries=old.filter(valid).map(e=>({...e,x:e.x*W/487,y:e.y*H/630}));save()}}catch(e){console.warn('Could not load saved markers',e)}}
-function icon(cat){return L.divIcon({className:'',html:'<div class="pin" style="background:'+ (colors[cat]||colors.Other) +'"><div class="pin-inner"></div></div>',iconSize:[27,27],iconAnchor:[13,26]})}
+const $=id=>document.getElementById(id);
+const client=window.leonidaSupabase;
+let entries=[],map,layer,W,H,editing=null,temporary=null,user=null,staff=false,loading=false;
+const safeError=e=>e?.message||'An unexpected error occurred';
+const setMessage=s=>{$('mapMessage').textContent=s};
+const normalize=(x,y)=>({x:Math.max(0,Math.min(1,x/W)),y:Math.max(0,Math.min(1,y/H))});
+const fromRow=r=>({id:r.id,x:r.x*W,y:r.y*H,name:r.name,category:r.category,status:r.interior_status,notes:r.notes||''});
+function icon(cat){return L.divIcon({className:'',html:'<div class="pin" style="background:'+(colors[cat]||colors.Other)+'"><div class="pin-inner"></div></div>',iconSize:[27,27],iconAnchor:[13,26]})}
 function closeEditor(){editing=null;$('editor').classList.remove('open');if(temporary){map.removeLayer(temporary);temporary=null}setTimeout(()=>map.invalidateSize(),30)}
-function openEditor(entry,isNew){editing={...entry,isNew};$('editorTitle').textContent=isNew?'Add building':'Edit building';$('buildingName').value=entry.name;$('buildingCategory').value=categories.includes(entry.category)?entry.category:'Other';$('buildingStatus').value=entry.status||'Unverified';$('buildingNotes').value=entry.notes;$('deleteBuilding').hidden=isNew;$('editor').classList.add('open');if(temporary){map.removeLayer(temporary);temporary=null}if(isNew)temporary=L.marker([entry.y,entry.x],{icon:icon(entry.category)}).addTo(map);setTimeout(()=>map.invalidateSize(),30)}
+function openEditor(entry,isNew){
+  if(!user){$('accountMessage').textContent='Please log in to submit a building proposal.';return}
+  editing={...entry,isNew};$('editorTitle').textContent=isNew?'Propose new building':'Suggest building edit';
+  $('buildingName').value=entry.name;$('buildingCategory').value=categories.includes(entry.category)?entry.category:'Other';
+  $('buildingStatus').value=entry.status||'Unverified';$('buildingNotes').value=entry.notes||'';
+  $('editor').classList.add('open');if(temporary){map.removeLayer(temporary);temporary=null}
+  if(isNew)temporary=L.marker([entry.y,entry.x],{icon:icon(entry.category)}).addTo(map);
+  setTimeout(()=>map.invalidateSize(),30);
+}
 function matches(e){const q=$('search').value.trim().toLowerCase();return (!$('filter').value||e.category===$('filter').value)&&(!q||(e.name+' '+e.notes+' '+e.category).toLowerCase().includes(q))}
-function render(){layer.clearLayers();$('list').replaceChildren();const shown=entries.filter(matches);$('count').textContent=shown.length;shown.forEach(e=>{const marker=L.marker([e.y,e.x],{icon:icon(e.category)}).addTo(layer);marker.on('click',()=>openEditor(e,false));const item=document.createElement('div');item.className='marker-item';const name=document.createElement('strong');name.textContent=e.name;const meta=document.createElement('small');meta.textContent=e.category+' • '+(e.status||'Unverified');item.append(name,meta);item.addEventListener('click',()=>{map.setView([e.y,e.x],Math.max(map.getZoom(),0));openEditor(e,false)});$('list').append(item)});if(!shown.length){const empty=document.createElement('p');empty.className='muted';empty.textContent='No buildings to show yet.';$('list').append(empty)}}
-function start(){bounds=[[0,0],[H,W]];map=L.map('map',{crs:L.CRS.Simple,minZoom:-4,maxZoom:5,zoomSnap:.25,zoomControl:true});L.imageOverlay(IMAGE,bounds).addTo(map);map.fitBounds(bounds);map.setMaxBounds([[-H*.2,-W*.2],[H*1.2,W*1.2]]);layer=L.layerGroup().addTo(map);initData();render();map.on('click',ev=>{const {lat:y,lng:x}=ev.latlng;if(x<0||x>W||y<0||y>H)return;openEditor({id:crypto.randomUUID(),x,y,name:'',category:'Business',status:'Unverified',notes:''},true)});$('buildingCategory').addEventListener('change',()=>{if(temporary)temporary.setIcon(icon($('buildingCategory').value))});$('buildingForm').addEventListener('submit',ev=>{ev.preventDefault();if(!editing)return;const name=$('buildingName').value.trim();if(!name)return;const updated={id:editing.id,x:editing.x,y:editing.y,name,category:$('buildingCategory').value,status:$('buildingStatus').value,notes:$('buildingNotes').value.trim()};if(editing.isNew)entries.push(updated);else entries=entries.map(e=>e.id===updated.id?updated:e);save();closeEditor();render()});$('deleteBuilding').addEventListener('click',()=>{if(editing&&!editing.isNew&&confirm('Delete this building?')){entries=entries.filter(e=>e.id!==editing.id);save();closeEditor();render()}});$('closeEditor').addEventListener('click',closeEditor);$('cancelEditor').addEventListener('click',closeEditor);$('search').addEventListener('input',render);$('filter').addEventListener('change',render);$('export').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(entries,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='leonida-markers.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});$('import').addEventListener('change',async ev=>{const file=ev.target.files?.[0];if(!file)return;try{const data=JSON.parse(await file.text());if(!Array.isArray(data)||!data.every(valid))throw Error('Invalid marker file');if(confirm('Replace your current markers with '+data.length+' imported markers?')){entries=data;save();closeEditor();render()}}catch(e){alert('Could not import JSON: '+e.message)}ev.target.value=''})}
-const image=new Image();image.onload=()=>{W=image.naturalWidth;H=image.naturalHeight;start()};image.onerror=()=>{$('hint').textContent='Map image not found: '+IMAGE+'. Check the GitHub filename.'};image.src=IMAGE;
+function render(){layer.clearLayers();$('list').replaceChildren();const shown=entries.filter(matches);$('count').textContent=shown.length;
+  shown.forEach(e=>{const marker=L.marker([e.y,e.x],{icon:icon(e.category)}).addTo(layer);marker.on('click',()=>openEditor(e,false));
+    const item=document.createElement('div');item.className='marker-item';const name=document.createElement('strong');name.textContent=e.name;
+    const meta=document.createElement('small');meta.textContent=e.category+' • '+(e.status||'Unverified');item.append(name,meta);
+    item.addEventListener('click',()=>{map.setView([e.y,e.x],Math.max(map.getZoom(),0));openEditor(e,false)});$('list').append(item)});
+  if(!shown.length){const empty=document.createElement('p');empty.className='muted';empty.textContent='No approved buildings to show yet.';$('list').append(empty)}
+}
+async function loadBuildings(){if(!client){setMessage('Supabase is unavailable.');return}
+  const {data,error}=await client.from('buildings').select('id,name,category,interior_status,notes,x,y').order('created_at',{ascending:true});
+  if(error){setMessage('Could not load buildings: '+safeError(error));return}
+  entries=(data||[]).map(fromRow);render();setMessage(entries.length+' approved building'+(entries.length===1?'':'s')+' loaded.');
+}
+function makeCard(title,meta,notes){const card=document.createElement('div');card.className='review-card';
+  const strong=document.createElement('strong');strong.textContent=title;
+  const small=document.createElement('small');small.textContent=meta;
+  const detail=document.createElement('p');detail.className='muted';detail.textContent=notes||'No notes';card.append(strong,small,detail);return card;
+}
+async function loadMySubmissions(){const target=$('mySubmissionList');target.replaceChildren();if(!user)return;
+  const {data,error}=await client.from('building_submissions').select('id,name,submission_type,status,created_at,moderator_notes').eq('submitted_by',user.id).order('created_at',{ascending:false}).limit(30);
+  if(error){target.textContent='Could not load submissions: '+safeError(error);return}
+  if(!data?.length){target.textContent='No submissions yet.';return}
+  for(const r of data){target.append(makeCard(r.name,r.submission_type+' • '+r.status,r.moderator_notes||''))}
+}
+async function loadModeration(){const target=$('moderationList');target.replaceChildren();if(!staff)return;
+  const {data,error}=await client.from('building_submissions').select('id,submission_type,building_id,name,category,interior_status,notes,x,y,created_at,submitted_by').eq('status','pending').order('created_at',{ascending:true}).limit(100);
+  if(error){target.textContent='Could not load review queue: '+safeError(error);return}
+  $('pendingCount').textContent=data.length;
+  if(!data.length){target.textContent='No pending submissions.';return}
+  for(const r of data){const card=makeCard(r.name,r.submission_type+' • '+r.category+' • '+r.interior_status+' • '+new Date(r.created_at).toLocaleString(),r.notes);
+    const loc=document.createElement('small');loc.textContent='Location: '+Math.round(r.x*10000)/100+'% across, '+Math.round(r.y*10000)/100+'% down';card.append(loc);
+    const actions=document.createElement('div');actions.className='review-actions';
+    const locate=document.createElement('button');locate.className='btn secondary';locate.textContent='Show on map';locate.type='button';
+    locate.addEventListener('click',()=>map.setView([r.y*H,r.x*W],Math.max(map.getZoom(),0)));
+    const approve=document.createElement('button');approve.className='btn';approve.textContent='Approve';approve.type='button';
+    const reject=document.createElement('button');reject.className='btn danger';reject.textContent='Reject';reject.type='button';
+    approve.addEventListener('click',()=>review(r,'approved',approve,reject));reject.addEventListener('click',()=>review(r,'rejected',approve,reject));
+    actions.append(locate,approve,reject);card.append(actions);target.append(card);
+  }
+}
+async function review(r,decision,approve,reject){
+  const note=decision==='rejected'?prompt('Optional reason for rejection (Cancel to stop):',''):null;
+  if(decision==='rejected'&&note===null)return;
+  if(decision==='approved'&&!confirm('Approve "'+r.name+'" and publish this '+r.submission_type+' proposal?'))return;
+  approve.disabled=reject.disabled=true;
+  const {error}=await client.rpc('review_building_submission',{p_submission_id:r.id,p_decision:decision,p_moderator_notes:note||null});
+  if(error){alert('Review failed: '+safeError(error));approve.disabled=reject.disabled=false;return}
+  await Promise.all([loadBuildings(),loadModeration(),loadMySubmissions()]);
+}
+async function refreshUser(){if(!client)return;
+  const {data:{user:current},error}=await client.auth.getUser();
+  user=error?null:current;
+  staff=false;
+  if(user){const {data:role,error:roleError}=await client.from('staff_roles').select('role').eq('user_id',user.id).maybeSingle();
+    if(roleError)console.warn('Could not check staff role',roleError);
+    staff=role?.role==='admin'||role?.role==='moderator';}
+  $('mySubmissions').hidden=!user;$('moderationSection').hidden=!staff;
+  $('hint').textContent=user?'Click the map to propose a building':'Log in to propose buildings';
+  if(!user&&editing)closeEditor();
+  await Promise.all([loadMySubmissions(),loadModeration()]);
+}
+async function submitBuilding(event){event.preventDefault();if(!editing||loading)return;
+  if(!client||!user){alert('Please log in first.');return}
+  const name=$('buildingName').value.trim();if(!name)return;
+  const {x,y}=normalize(editing.x,editing.y);
+  const proposal={submission_type:editing.isNew?'new':'edit',building_id:editing.isNew?null:editing.id,
+    name,category:$('buildingCategory').value,interior_status:$('buildingStatus').value,
+    notes:$('buildingNotes').value.trim(),x,y,submitted_by:user.id};
+  loading=true;$('submitBuilding').disabled=true;
+  try{const {error}=await client.from('building_submissions').insert(proposal);if(error)throw error;
+    closeEditor();setMessage('Proposal submitted for approval. It will appear on the map only after review.');
+    await Promise.all([loadMySubmissions(),loadModeration()]);
+  }catch(e){alert('Could not submit building: '+safeError(e))}
+  finally{loading=false;$('submitBuilding').disabled=false}
+}
+function start(){const bounds=[[0,0],[H,W]];
+  map=L.map('map',{crs:L.CRS.Simple,minZoom:-4,maxZoom:5,zoomSnap:.25,zoomControl:true});
+  L.imageOverlay(IMAGE,bounds).addTo(map);map.fitBounds(bounds);
+  map.setMaxBounds([[-H*.2,-W*.2],[H*1.2,W*1.2]]);layer=L.layerGroup().addTo(map);
+  render();map.on('click',ev=>{const {lat:y,lng:x}=ev.latlng;if(x<0||x>W||y<0||y>H)return;
+    openEditor({id:crypto.randomUUID(),x,y,name:'',category:'Business',status:'Unverified',notes:''},true)});
+  $('buildingCategory').addEventListener('change',()=>{if(temporary)temporary.setIcon(icon($('buildingCategory').value))});
+  $('buildingForm').addEventListener('submit',submitBuilding);
+  $('closeEditor').addEventListener('click',closeEditor);$('cancelEditor').addEventListener('click',closeEditor);
+  $('search').addEventListener('input',render);$('filter').addEventListener('change',render);
+  $('export').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(entries,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='leonida-approved-buildings.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});
+  loadBuildings();refreshUser();
+  if(client)client.auth.onAuthStateChange(()=>{setTimeout(refreshUser,0)});
+}
+const image=new Image();image.onload=()=>{W=image.naturalWidth;H=image.naturalHeight;start()};
+image.onerror=()=>{$('hint').textContent='Map image not found: '+IMAGE+'. Check the GitHub filename.'};image.src=IMAGE;
 })();
 </script></body></html>
